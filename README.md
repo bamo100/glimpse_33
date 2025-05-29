@@ -32,7 +32,9 @@ npm install
 2. **Set environment variables:**
 \`\`\`bash
 # Create .env.local file
-echo "NEXT_PUBLIC_BASE_URL=http://localhost:3000" > .env.local
+echo "NEXT_PUBLIC_BASE_URL=http://localhost:3000" 
+echo "NEXT_PUBLIC_POST_URL=https://jsonplaceholder.typicode.com/posts"
+echo "NEXT_PUBLIC_POST_URL=https://jsonplaceholder.typicode.com/users" > .env.local
 \`\`\`
 
 3. **Run the development server:**
@@ -55,7 +57,7 @@ Email: admin@example.com
 Password: password123
 \`\`\` -->
 
-## 📁 Project Structure
+<!-- ## 📁 Project Structure
 
 \`\`\`
 glimpse_33/
@@ -69,7 +71,7 @@ pages
 ├── lib/                  # Utility functions and API clients
 ├── types/                # TypeScript type definitions
 └── __tests__/            # Test files
-\`\`\`
+\`\`\` -->
 
 ## 🛠️ Available Scripts
 
@@ -105,21 +107,13 @@ npm run test:coverage
 - System theme detection
 - Customizable via Tailwind CSS
 
-### Categories
-Edit categories in `components/search-filters.tsx`:
-\`\`\`typescript
-const categories = [
-  { value: "technology", label: "Technology" },
-  { value: "design", label: "Design" },
-  // Add more categories
-]
-\`\`\`
-
 ## 🔧 Configuration
 
 ### Environment Variables
 \`\`\`bash
 NEXT_PUBLIC_BASE_URL=http://localhost:3000  # Required for metadata
+NEXT_PUBLIC_POST_URL=https://jsonplaceholder.typicode.com/posts # Required for posts data
+NEXT_PUBLIC_USER_URL=https://jsonplaceholder.typicode.com/users # Required for users data
 \`\`\`
 
 ### API Integration
@@ -131,7 +125,6 @@ Replace mock authentication in `lib/auth-client.ts` with your backend API endpoi
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS + shadcn/ui
 - **State Management:** React Query + React Context
-- **Authentication:** Custom mock system (production-ready)
 - **Testing:** Jest + React Testing Library
 - **Icons:** Lucide React
 - **Animations:** Framer Motion
