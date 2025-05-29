@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { FeedItemDetail } from "./feed-item-detail"
-import type { FeedItem } from "@/types/feed"
+import type { FeedItem, JSONPlaceholderPost } from "@/types/feed"
 import { transformPostToFeedItem } from "@/lib/data-transformer"
 
 interface PageProps {
@@ -136,7 +136,7 @@ export async function generateStaticParams() {
     const response = await fetch(`${process.env.NEXT_PUBLIC_POST_URL}`)
     const posts = await response.json()
 
-    return posts.slice(0, 20).map((post: any) => ({
+    return posts.slice(0, 20).map((post: JSONPlaceholderPost) => ({
       id: post.id.toString(),
     }))
   } catch (error) {

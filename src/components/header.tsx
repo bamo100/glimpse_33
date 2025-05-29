@@ -9,7 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Badge } from "@/components/ui/badge"
 
 export function Header() {
-  const { setTheme, theme } = useTheme()
+  const { setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   // useEffect only runs on the client, so now we can safely show the UI

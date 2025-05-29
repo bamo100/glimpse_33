@@ -181,7 +181,7 @@ export function SearchFilters({ filters, onFiltersChange, totalResults }: Search
             <>
               {filters.query && (
                 <Badge variant="secondary" className="flex items-center gap-1">
-                  Search: "{filters.query}"
+                  Search: {`"${filters.query}"`}
                   <Button
                     variant="ghost"
                     size="sm"

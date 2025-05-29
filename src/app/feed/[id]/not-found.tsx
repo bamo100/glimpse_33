@@ -15,7 +15,7 @@ export default function NotFound() {
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">Article Not Found</h1>
           <p className="text-muted-foreground">
-            The article you're looking for doesn't exist or has been removed. JSONPlaceholder only has posts with IDs
+            The article you are looking for doese not exist or has been removed. JSONPlaceholder only has posts with IDs
             1-100.
           </p>
         </div>

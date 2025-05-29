@@ -57,6 +57,7 @@ export function FeedItemDetail({ itemId }: FeedItemDetailProps) {
         })
       }
     } catch (error) {
+      console.error(error)
       toastError("Failed to like article", {
         description: "Please try again later",
       })
@@ -80,6 +81,7 @@ export function FeedItemDetail({ itemId }: FeedItemDetailProps) {
         })
       }
     } catch (error) {
+      console.error(error)
       toastError("Failed to bookmark article", {
         description: "Please try again later",
       })
@@ -96,6 +98,7 @@ export function FeedItemDetail({ itemId }: FeedItemDetailProps) {
         })
         toastSuccess("Article shared successfully!")
       } catch (error) {
+        console.error(error)
         // User cancelled sharing or sharing failed
         copyToClipboard()
       }

@@ -5,7 +5,7 @@ import { WifiOff } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export function NetworkStatus() {
-  const [isOnline, setIsOnline] = useState(true)
+  const [_isOnline, setIsOnline] = useState(true)
   const [showOfflineAlert, setShowOfflineAlert] = useState(false)
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export function NetworkStatus() {
     <div className="fixed top-20 left-4 right-4 z-50 max-w-md mx-auto">
       <Alert variant="destructive">
         <WifiOff className="h-4 w-4" />
-        <AlertDescription>You're currently offline. Some features may not work properly.</AlertDescription>
+        <AlertDescription>You are currently offline. Some features may not work properly.</AlertDescription>
       </Alert>
     </div>
   )

@@ -83,7 +83,7 @@ class APIClient {
         if (!response.ok) {
           let errorData: any = {}
           try {
-            errorData = await response.json()
+            errorData = await response.json(); // eslint-disable-line @typescript-eslint/no-unused-vars
           } catch {
             // Ignore JSON parsing errors
           }

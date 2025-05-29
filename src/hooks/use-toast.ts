@@ -17,6 +17,7 @@ type ToasterToast = {
   onOpenChange?: (open: boolean) => void
 }
 
+// eslint-disable-next-line
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
   UPDATE_TOAST: "UPDATE_TOAST",
@@ -139,8 +140,10 @@ function dispatch(action: Action) {
 
 type Toast = Omit<ToasterToast, "id">
 
+// eslint-disable-next-line
 function toast({ title, description, variant = "default", action }: Toast) {
-  const message = title || description || ""
+  // eslint-disable-next-line
+  const message = title || description || "" 
   const options: any = {}
 
   if (description && title) {
@@ -185,25 +188,25 @@ function toast({ title, description, variant = "default", action }: Toast) {
   }
 }
 
-function useToast() {
-  const [state, setState] = React.useState<State>(memoryState)
+// function useToast() {
+//   const [state, setState] = React.useState<State>(memoryState)
 
-  React.useEffect(() => {
-    listeners.push(setState)
-    return () => {
-      const index = listeners.indexOf(setState)
-      if (index > -1) {
-        listeners.splice(index, 1)
-      }
-    }
-  }, [state])
+//   React.useEffect(() => {
+//     listeners.push(setState)
+//     return () => {
+//       const index = listeners.indexOf(setState)
+//       if (index > -1) {
+//         listeners.splice(index, 1)
+//       }
+//     }
+//   }, [state])
 
-  return {
-    ...state,
-    toast,
-    dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
-  }
-}
+//   return {
+//     ...state,
+//     toast,
+//     dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
+//   }
+// }
 
 // Simple wrapper functions for Sonner
 export const toastSimple = (message: string, options?: any) => sonnerToast(message, options)

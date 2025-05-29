@@ -7,11 +7,11 @@ import { jest } from "@jest/globals"
 
 // Mock Next.js components
 jest.mock("next/link", () => {
-  return ({ children, href }: { children: React.ReactNode; href: string }) => <a href={href}>{children}</a>
+  return ({ children, href }: { children: React.ReactNode; href: string }) => <a href={href}>{children}</a>  // eslint-disable-line react/display-name
 })
 
 jest.mock("next/image", () => {
-  return ({ src, alt, ...props }: any) => <img src={src || "/placeholder.svg"} alt={alt} {...props} />
+  return ({ src, alt, ...props }: any) => <img src={src || "/placeholder.svg"} alt={alt} {...props} />  // eslint-disable-line react/display-name
 })
 
 // Mock console.warn to suppress expected warnings

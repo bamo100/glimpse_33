@@ -320,7 +320,7 @@ function FeedContent() {
               transition={{ duration: 0.5 }}
               className="text-center py-8"
             >
-              <p className="text-muted-foreground">You've reached the end of the feed!</p>
+              <p className="text-muted-foreground">You have reached the end of the feed!</p>
             </motion.div>
           )}
         </>

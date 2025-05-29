@@ -44,7 +44,7 @@ const pageTransitionVariants = {
   exit: { opacity: 0, x: -20 },
 }
 
-export function FeedTransition({ children, isLoading, mode }: FeedTransitionProps) {
+export function FeedTransition({ children, mode }: FeedTransitionProps) {
   if (mode === "manual") {
     return (
       <AnimatePresence mode="wait">

@@ -1,39 +1,137 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Glimpse_33 Feed Explorer
 
-## Getting Started
+A modern, responsive feed explorer application built with Next.js 15, featuring authentication, search, filtering, and infinite scrolling. Powered by JSONPlaceholder API for demo content.
 
-First, run the development server:
+## ✨ Features
 
-```bash
+<!-- - 🔐 **Authentication System** - Login, registration, and profile management -->
+- 🔍 **Advanced Search** - Real-time search with history and filters
+- 📱 **Responsive Design** - Mobile-first design with dark/light themes
+- ♾️ **Infinite Scroll** - Seamless content loading with manual pagination option
+- 🏷️ **Category Filtering** - Filter by technology, design, business, lifestyle
+<!-- - 👤 **User Profiles** - Customizable profiles with preferences -->
+- 🎨 **Modern UI** - Built with shadcn/ui and Tailwind CSS
+- ⚡ **Performance** - Optimized with React Query and Next.js 15
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm, yarn, or pnpm
+
+### Installation
+
+1. **Clone and install dependencies:**
+\`\`\`bash
+git clone <repository-url>
+cd feed-explorer
+npm install
+\`\`\`
+
+2. **Set environment variables:**
+\`\`\`bash
+# Create .env.local file
+echo "NEXT_PUBLIC_BASE_URL=http://localhost:3000" > .env.local
+\`\`\`
+
+3. **Run the development server:**
+\`\`\`bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+\`\`\`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. **Open your browser:**
+Navigate to [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<!-- ## 🔑 Demo Accounts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+\`\`\`
+User Account:
+Email: demo@example.com
+Password: password123
 
-## Learn More
+Admin Account:
+Email: admin@example.com
+Password: password123
+\`\`\` -->
 
-To learn more about Next.js, take a look at the following resources:
+## 📁 Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+\`\`\`
+glimpse_33/
+├── app/                    # Next.js 15 App Route
+pages
+│   ├── feed/              # Feed detail pages
+│   └── profile/           # User profile pages
+├── components/            # Reusable UI  components
+│   └── ui/               # shadcn/ui components
+├── hooks/                # Custom React hooks
+├── lib/                  # Utility functions and API clients
+├── types/                # TypeScript type definitions
+└── __tests__/            # Test files
+\`\`\`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠️ Available Scripts
 
-## Deploy on Vercel
+\`\`\`bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run test         # Run Jest tests
+npm run test:watch   # Run tests in watch mode
+npm run test:coverage # Run tests with coverage
+\`\`\`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧪 Testing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The project includes comprehensive tests using Jest and React Testing Library:
 
+\`\`\`bash
+# Run all tests
+npm test
 
-npx shadcn@latest add "https://v0.dev/chat/b/b_cil7tor1xol?token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..HWKKaXcNWnvqs_kV.luEEmX8qzKgD9kRVE3Ll2MfPNV1jXQMWQQJjR7PE83_ed9URgvG67jDuqQI.2yEgzpuuKkayPTEosFyPmg"
+# Run tests in watch mode
+npm run test:watch
+
+# Generate coverage report
+npm run test:coverage
+\`\`\`
+
+## 🎨 Customization
+
+### Themes
+- Light/Dark mode toggle in header
+- System theme detection
+- Customizable via Tailwind CSS
+
+### Categories
+Edit categories in `components/search-filters.tsx`:
+\`\`\`typescript
+const categories = [
+  { value: "technology", label: "Technology" },
+  { value: "design", label: "Design" },
+  // Add more categories
+]
+\`\`\`
+
+## 🔧 Configuration
+
+### Environment Variables
+\`\`\`bash
+NEXT_PUBLIC_BASE_URL=http://localhost:3000  # Required for metadata
+\`\`\`
+
+### API Integration
+Replace mock authentication in `lib/auth-client.ts` with your backend API endpoints.
+
+## 📦 Tech Stack
+
+- **Framework:** Next.js 15 with App Router
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS + shadcn/ui
+- **State Management:** React Query + React Context
+- **Authentication:** Custom mock system (production-ready)
+- **Testing:** Jest + React Testing Library
+- **Icons:** Lucide React
+- **Animations:** Framer Motion

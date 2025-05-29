@@ -159,7 +159,7 @@ function TestableFeedPage() {
             <div className="flex items-center gap-2 flex-wrap">
               {filters.query && (
                 <span className="bg-gray-100 px-2 py-1 rounded text-sm">
-                  Search: "{filters.query}"
+                  Search: {`"${filters.query}"`}
                   <button
                     onClick={() => handleFiltersChange({ ...filters, query: "", page: 1 })}
                     className="ml-2 text-red-500"
