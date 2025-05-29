@@ -1,12 +1,11 @@
 "use client"
 
-import { Moon, Sun, Search, Database } from "lucide-react"
+import { Moon, Sun, Search } from "lucide-react"
 import Link from "next/link"
 import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Badge } from "@/components/ui/badge"
 
 export function Header() {
   const { setTheme } = useTheme()
@@ -42,7 +41,7 @@ export function Header() {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <Search className="h-6 w-6" />
-          <span className="font-bold text-xl">Feed Explorer</span>
+          <span className="font-bold text-xl">Glimpse_33 Feed Explorer</span>
         </Link>
 
         <div className="flex items-center gap-4">
