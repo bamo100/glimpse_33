@@ -8,6 +8,7 @@ interface PageProps {
   params: Promise<{ id: string }>
 }
 
+// Fetch the feed item data for metadata generation
 async function getFeedItem(id: string): Promise<FeedItem | null> {
   try {
     // Use the JSONPlaceholder API directly for metadata generation
@@ -42,6 +43,7 @@ async function getFeedItem(id: string): Promise<FeedItem | null> {
   }
 }
 
+//Genearte metadata for the feed item page
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params
   const { id } = resolvedParams
@@ -155,5 +157,7 @@ export default async function FeedItemPage({ params }: PageProps) {
     notFound()
   }
 
-  return <FeedItemDetail itemId={id} />
+  return (
+    <FeedItemDetail itemId={id} />
+  )
 }

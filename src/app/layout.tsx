@@ -27,7 +27,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Feed Explorer - Dynamic Content Discovery",
+    default: "Glimpse_33 Feed Explorer - Dynamic Content Discovery",
     template: "%s | Feed Explorer",
   },
   description:
@@ -46,8 +46,8 @@ export const metadata: Metadata = {
     "filter",
     "infinite scroll",
   ],
-  authors: [{ name: "Feed Explorer Team", url: "https://feedexplorer.com" }],
-  creator: "Feed Explorer Team",
+  authors: [{ name: "Mutolib Olagoke Team", url: "https://mutolib.vercel.app" }],
+  creator: "Mutolib Olagoke Team",
   publisher: "Feed Explorer",
   formatDetection: {
     email: false,
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "/",
-    title: "Feed Explorer - Dynamic Content Discovery",
+    title: "Glimpse_33 Feed Explorer - Dynamic Content Discovery",
     description: "A dynamic feed explorer with search, filtering, and infinite scrolling powered by JSONPlaceholder",
     siteName: "Feed Explorer",
     images: [
@@ -70,13 +70,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Feed Explorer - Dynamic Content Discovery",
+        alt: "Glimpse_33 Feed Explorer - Dynamic Content Discovery",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Feed Explorer - Dynamic Content Discovery",
+    title: "Glimpse_33 Feed Explorer - Dynamic Content Discovery",
     description: "A dynamic feed explorer with search, filtering, and infinite scrolling",
     images: ["/og-image.png"],
     creator: "@feedexplorer",

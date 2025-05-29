@@ -40,6 +40,7 @@ export function FeedItemDetail({ itemId }: FeedItemDetailProps) {
   const [isLiked, setIsLiked] = useState(false)
   const [isBookmarked, setIsBookmarked] = useState(false)
 
+  //this function takes care of the functionality for the like button
   const handleLike = async () => {
     try {
       await likeMutation.mutateAsync(itemId)
@@ -64,6 +65,8 @@ export function FeedItemDetail({ itemId }: FeedItemDetailProps) {
     }
   }
 
+  //this function takes care of the functionality for the bookmark button
+  //it toggles the bookmark state and updates the UI accordingly
   const handleBookmark = async () => {
     try {
       await bookmarkMutation.mutateAsync(itemId)
@@ -88,6 +91,8 @@ export function FeedItemDetail({ itemId }: FeedItemDetailProps) {
     }
   }
 
+  //this function handles sharing the article
+  //it uses the Web Share API if available, otherwise falls back to copying the link to clipboard
   const handleShare = async () => {
     if (navigator.share && item) {
       try {
@@ -114,6 +119,7 @@ export function FeedItemDetail({ itemId }: FeedItemDetailProps) {
     })
   }
 
+  //this function handles opening the email client to contact the author
   const handleEmailAuthor = () => {
     if (item?.author.email) {
       window.open(`mailto:${item.author.email}?subject=Regarding: ${item.title}`, "_blank")
@@ -125,6 +131,7 @@ export function FeedItemDetail({ itemId }: FeedItemDetailProps) {
     }
   }
 
+  // this function handles opening the author's website in a new tab
   const handleVisitWebsite = () => {
     if (item?.author.website) {
       window.open(item.author.website, "_blank")
