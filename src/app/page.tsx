@@ -1,103 +1,339 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+import { useState, useEffect, useCallback } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useInView } from "react-intersection-observer"
+import { AlertCircle, RefreshCw, Wifi } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { SearchFilters } from "@/components/search-filters"
+import { FeedItemCard } from "@/components/feed-item-card"
+import { FeedSkeleton, FeedItemSkeleton } from "@/components/feed-skeleton"
+import { ErrorBoundary } from "@/components/error-boundary"
+import { NetworkStatus } from "@/components/network-status"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
+import { useFeed } from "@/hooks/use-feed"
+import { toastSuccess, toastWithOptions } from "@/hooks/use-toast"
+import type { SearchFilters as SearchFiltersType } from "@/types/feed"
+import { PaginationControls } from "@/components/pagination-controls"
+import { FeedTransition, FeedItemWrapper } from "@/components/feed-transition"
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+function FeedContent() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  // Initialize filters from URL parameters
+  const [filters, setFilters] = useState<SearchFiltersType>(() => ({
+    query: searchParams.get("q") || "",
+    category: searchParams.get("category") || "all",
+    page: Number.parseInt(searchParams.get("page") || "1"),
+  }))
+
+  const [paginationMode, setPaginationMode] = useState<"infinite" | "manual">("infinite")
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error, refetch } = useFeed(filters)
+
+  const { ref, inView } = useInView({
+    threshold: 0,
+    rootMargin: "100px",
+  })
+
+  // Update URL when filters change
+  const updateURL = useCallback(
+    (newFilters: SearchFiltersType) => {
+      const params = new URLSearchParams()
+      if (newFilters.query) params.set("q", newFilters.query)
+      if (newFilters.category && newFilters.category !== "all") params.set("category", newFilters.category)
+      if (newFilters.page > 1) params.set("page", newFilters.page.toString())
+
+      const newURL = params.toString() ? `/?${params.toString()}` : "/"
+      router.replace(newURL, { scroll: false })
+    },
+    [router],
+  )
+
+  // Auto-fetch next page when scrolling (infinite scroll mode)
+  useEffect(() => {
+    if (paginationMode === "infinite" && inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage()
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage, paginationMode])
+
+  // Update URL when filters change
+  useEffect(() => {
+    updateURL(filters)
+  }, [filters, updateURL])
+
+  // Handle filter changes
+  const handleFiltersChange = useCallback((newFilters: SearchFiltersType) => {
+    setFilters(newFilters)
+  }, [])
+
+  const handlePreviousPage = () => {
+    if (filters.page > 1) {
+      setFilters((prev) => ({ ...prev, page: prev.page - 1 }))
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+  }
+
+  const handleNextPage = () => {
+    if (hasNextPage) {
+      setFilters((prev) => ({ ...prev, page: prev.page + 1 }))
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+  }
+
+  const handleRetry = () => {
+    refetch()
+    toastWithOptions({
+      title: "Retrying...",
+      description: "Attempting to reload the feed",
+      variant: "info",
+    })
+  }
+
+  const handleRefreshPage = () => {
+    window.location.reload()
+    toastWithOptions({
+      title: "Refreshing page...",
+      description: "Reloading the entire application",
+      variant: "info",
+    })
+  }
+
+  const allItems = data?.pages.flatMap((page) => page.items) ?? []
+  const totalResults = data?.pages[0]?.total
+  const currentPageItems = paginationMode === "infinite" ? allItems : (data?.pages[0]?.items ?? [])
+
+  // Add this useEffect to refetch when pagination mode changes or page changes in manual mode
+  useEffect(() => {
+    if (paginationMode === "manual") {
+      refetch()
+    }
+  }, [paginationMode, filters.page, refetch])
+
+  // Show success message when data loads successfully after an error
+  useEffect(() => {
+    if (data && !isLoading && !isError) {
+      const hadError = sessionStorage.getItem("feed-had-error")
+      if (hadError) {
+        toastSuccess("Feed loaded successfully!", {
+          description: `Found ${totalResults} articles`,
+        })
+        sessionStorage.removeItem("feed-had-error")
+      }
+    }
+  }, [data, isLoading, isError, totalResults])
+
+  // Track errors for success message
+  useEffect(() => {
+    if (isError) {
+      sessionStorage.setItem("feed-had-error", "true")
+    }
+  }, [isError])
+
+  if (isLoading) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container mx-auto px-4 py-8"
+      >
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-6">Feed Explorer</h1>
+          <SearchFilters filters={filters} onFiltersChange={handleFiltersChange} />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        <FeedSkeleton />
+      </motion.div>
+    )
+  }
+
+  if (isError) {
+    const isNetworkError = error?.message.includes("Network Error")
+    const isTimeoutError = error?.message.includes("timeout")
+    const isRateLimitError = error?.message.includes("Rate limit")
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
+        className="container mx-auto px-4 py-8"
+      >
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-6">Feed Explorer</h1>
+          <SearchFilters filters={filters} onFiltersChange={handleFiltersChange} />
+        </div>
+
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>
+            {isNetworkError && "Connection Problem"}
+            {isTimeoutError && "Request Timeout"}
+            {isRateLimitError && "Rate Limit Exceeded"}
+            {!isNetworkError && !isTimeoutError && !isRateLimitError && "Error Loading Feed"}
+          </AlertTitle>
+          <AlertDescription className="mt-2">
+            {isNetworkError && "Unable to connect to the server. Please check your internet connection and try again."}
+            {isTimeoutError && "The request took too long to complete. Please try again."}
+            {isRateLimitError && "Too many requests. Please wait a moment before trying again."}
+            {!isNetworkError &&
+              !isTimeoutError &&
+              !isRateLimitError &&
+              (error?.message || "Failed to load feed. Please try again.")}
+
+            <div className="flex gap-2 mt-4">
+              <Button variant="outline" size="sm" onClick={handleRetry} className="flex items-center gap-2">
+                <RefreshCw className="h-4 w-4" />
+                Retry
+              </Button>
+              {isNetworkError && (
+                <Button variant="outline" size="sm" onClick={handleRefreshPage} className="flex items-center gap-2">
+                  <Wifi className="h-4 w-4" />
+                  Refresh Page
+                </Button>
+              )}
+            </div>
+          </AlertDescription>
+        </Alert>
+      </motion.div>
+    )
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="container mx-auto px-4 py-8"
+    >
+      <div className="mb-8">
+        <motion.h1
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="text-3xl font-bold mb-6"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          Feed Explorer
+        </motion.h1>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          <SearchFilters filters={filters} onFiltersChange={handleFiltersChange} totalResults={totalResults} />
+        </motion.div>
+
+        {/* Pagination Mode Toggle */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="flex items-center gap-4 mt-4"
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+          <span className="text-sm font-medium">Pagination:</span>
+          <div className="flex gap-2">
+            <Button
+              variant={paginationMode === "infinite" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setPaginationMode("infinite")}
+              className="transition-all duration-200"
+            >
+              Infinite Scroll
+            </Button>
+            <Button
+              variant={paginationMode === "manual" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setPaginationMode("manual")}
+              className="transition-all duration-200"
+            >
+              Manual Pages
+            </Button>
+          </div>
+        </motion.div>
+      </div>
+
+      {currentPageItems.length === 0 ? (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-center py-12"
+        >
+          <p className="text-muted-foreground text-lg">No articles found matching your criteria.</p>
+          <p className="text-muted-foreground text-sm mt-2">Try adjusting your search or filters.</p>
+        </motion.div>
+      ) : (
+        <>
+          <FeedTransition mode={paginationMode} isLoading={isLoading}>
+            {currentPageItems.map((item, index) => (
+              <FeedItemWrapper key={item.id} index={index}>
+                <FeedItemCard item={item} />
+              </FeedItemWrapper>
+            ))}
+          </FeedTransition>
+
+          {/* Manual Pagination Controls */}
+          {paginationMode === "manual" && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              <PaginationControls
+                currentPage={filters.page}
+                totalPages={Math.ceil((totalResults || 0) / 10)}
+                hasNextPage={hasNextPage}
+                isLoading={isFetchingNextPage || isLoading}
+                onPreviousPage={handlePreviousPage}
+                onNextPage={handleNextPage}
+              />
+            </motion.div>
+          )}
+
+          {/* Infinite Scroll Trigger */}
+          {paginationMode === "infinite" && (
+            <div ref={ref} className="mt-8">
+              <AnimatePresence>
+                {isFetchingNextPage && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  >
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <FeedItemSkeleton key={i} />
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+
+          {!hasNextPage && currentPageItems.length > 0 && paginationMode === "infinite" && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-center py-8"
+            >
+              <p className="text-muted-foreground">You've reached the end of the feed!</p>
+            </motion.div>
+          )}
+        </>
+      )}
+    </motion.div>
+  )
+}
+
+export default function FeedPage() {
+  return (
+    <ErrorBoundary>
+      <NetworkStatus />
+      <FeedContent />
+    </ErrorBoundary>
+  )
 }
