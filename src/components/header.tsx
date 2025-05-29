@@ -23,23 +23,10 @@ export function Header() {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
             <Search className="h-6 w-6" />
-            <span className="font-bold text-xl">Feed Explorer</span>
-            <Badge variant="secondary" className="ml-2 text-xs">
-              <Database className="h-3 w-3 mr-1" />
-              JSONPlaceholder
-            </Badge>
+            <span className="font-bold text-xl">Glimpse_33 Feed Explorer</span>
           </Link>
 
           <div className="flex items-center gap-4">
-            <a
-              href="https://jsonplaceholder.typicode.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              API Source
-            </a>
-
             <Button variant="outline" size="icon" disabled>
               <Sun className="h-[1.2rem] w-[1.2rem]" />
               <span className="sr-only">Toggle theme</span>
@@ -56,22 +43,9 @@ export function Header() {
         <Link href="/" className="flex items-center space-x-2">
           <Search className="h-6 w-6" />
           <span className="font-bold text-xl">Feed Explorer</span>
-          <Badge variant="secondary" className="ml-2 text-xs">
-            <Database className="h-3 w-3 mr-1" />
-            JSONPlaceholder
-          </Badge>
         </Link>
 
         <div className="flex items-center gap-4">
-          <a
-            href="https://jsonplaceholder.typicode.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            API Source
-          </a>
-
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">
