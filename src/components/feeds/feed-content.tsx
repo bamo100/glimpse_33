@@ -14,7 +14,7 @@ import { useFeed } from "@/hooks/use-feed"
 import { toastSuccess, toastWithOptions } from "@/hooks/use-toast"
 import type { SearchFilters as SearchFiltersType } from "@/types/feed"
 import { PaginationControls } from "@/components/pagination-controls"
-import { FeedTransition, FeedItemWrapper, FeedIsLoadingTransition, FeedIsErrorTransition, FeedCurrentPageTransition, FeedPaginationManualTransition, FeedPaginationInfiniteTransition, FeedItemEndTransition, FeedBodyTransition } from "@/components/feeds/feed-transition"
+import { FeedTransition, FeedItemWrapper, FeedIsErrorTransition, FeedCurrentPageTransition, FeedPaginationManualTransition, FeedPaginationInfiniteTransition, FeedItemEndTransition, FeedBodyTransition } from "@/components/feeds/feed-transition"
 
 export function FeedContent() {
   const router = useRouter()
