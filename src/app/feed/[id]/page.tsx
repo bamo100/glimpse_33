@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!item) {
     return {
-      title: "Article Not Found | Feed Explorer",
+      title: "Article Not Found | Glimpse_33 Feed Explorer",
       description: "The requested article could not be found.",
       robots: "noindex, nofollow",
     }
@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const articleUrl = `${baseUrl}/feed/${id}`
 
   return {
-    title: `${item.title} | Feed Explorer`,
+    title: `${item.title} | Glimpse_33 Feed Explorer`,
     description: item.description,
     authors: [{ name: item.author.name, url: item.author.website }],
     keywords: [...item.tags, item.category, "article", "blog", "feed explorer"],
@@ -82,7 +82,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: item.title,
       description: item.description,
       url: articleUrl,
-      siteName: "Feed Explorer",
+      siteName: "Glimpse_33 Feed Explorer",
       images: [
         {
           url: item.thumbnail,

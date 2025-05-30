@@ -1,7 +1,7 @@
 import type React from "react"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { FeedItemCard } from "@/components/feed-item-card"
+import { FeedItemCard } from "@/components/feeds/feed-item-card"
 import type { FeedItem } from "@/types/feed"
 import { jest } from "@jest/globals"
 

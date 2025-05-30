@@ -2,6 +2,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export function FeedItemSkeleton() {
+  console.log("Loading feed item skeleton...")
   return (
     <Card>
       <Skeleton className="aspect-video w-full" />
@@ -31,6 +32,7 @@ export function FeedItemSkeleton() {
 }
 
 export function FeedSkeleton() {
+  console.log("Loading feed skeleton...")
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {Array.from({ length: 6 }).map((_, i) => (
